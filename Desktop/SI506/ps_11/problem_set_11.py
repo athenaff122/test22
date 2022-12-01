@@ -54,7 +54,15 @@ def convert_gravity_value(value):
         float: if value successfully converted; otherwise returns value unchanged.
     """
 
-    pass
+    try:
+        if "standard" in value.lower():
+            # print("test!")
+            value = value.replace("standard",'')
+            return utl.convert_to_int(value.strip(" "))
+        else:
+            return utl.convert_to_float(value)
+    except:
+        return utl.convert_to_none(value)
 
 
 def create_droid(data):
@@ -352,13 +360,15 @@ def main():
     """
     # PROBLEM 01
     # Problem 1.2
-    mandalorian_people = None
-
+    mandalorian_people = utl.read_csv_to_dicts('./mandalorian_people.csv')
+    # print(mandalorian_people)
+    
     # Problem 1.3
-    mandalorian_starships = None
-    mandalorian_planets = None
-    mandalorian_droids = None
-    mandalorian_vehicles = None
+    mandalorian_starships = utl.read_json('./mandalorian_starships.json')
+    # print(mandalorian_starships)
+    mandalorian_planets = utl.read_json('./mandalorian_planets.json')
+    mandalorian_droids = utl.read_json('./mandalorian_droids.json')
+    mandalorian_vehicles = utl.read_json('./mandalorian_vehicles.json')
 
     # PROBLEM 02
     # Problem 2.1.5 Test convert_to_none(), convert_to_int(), convert_to_float(), convert_to_list()
@@ -382,9 +392,9 @@ def main():
     # print(f"\n2.1.4 convert_to_list -> no change = {utl.convert_to_list([506, 507], ', ')}")
 
     # Problem 2.2.1
-    # print(f"\n2.2.1 convert_gravity_value -> float = {convert_gravity_value('1 standard')}")
-    # print(f"\n2.2.1 convert_gravity_value -> None = {convert_gravity_value('N/A')}")
-    # print(f"\n2.2.1 convert_gravity_value -> float = {convert_gravity_value('0.98')}")
+    print(f"\n2.2.1 convert_gravity_value -> float = {convert_gravity_value('1 standard')}")
+    print(f"\n2.2.1 convert_gravity_value -> None = {convert_gravity_value('N/A')}")
+    print(f"\n2.2.1 convert_gravity_value -> float = {convert_gravity_value('0.98')}")
 
     # PROBLEM 3
     # Problem 3.1.1 Call get_mandalorian_data()

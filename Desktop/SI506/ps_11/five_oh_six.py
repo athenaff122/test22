@@ -26,7 +26,11 @@ def convert_to_float(value):
              value unchanged.
     """
 
-    pass
+    try:
+        value = float(value)
+        return value
+    except:
+        return convert_to_none(value)
 
 
 def convert_to_int(value):
@@ -50,10 +54,15 @@ def convert_to_int(value):
              unchanged.
     """
 
-    pass
+    try:
+        value = int(value)
+        return value
+    except:
+        return convert_to_none(value)
 
 
-def convert_to_list(value, delimiter=None):
+
+def convert_to_list(value, delimiter = None):
     """Attempts to convert the passed in < value > to a list. In the try block the < value > is
     first compared to the < NONE_VALUES > items. Leading or trailing spaces are removed from the
     passed in < value > before a case-insensitive comparison is performed between the < value >
@@ -74,7 +83,17 @@ def convert_to_list(value, delimiter=None):
                        which case None is returned; otherwise returns the < value > unchanged.
     """
 
-    pass
+    try:
+        if value.strip(" ").lower() in NONE_VALUES:
+            return convert_to_none(value)
+        else:
+            if delimiter:
+                return value.split(delimiter)
+            else:
+                return value.split("")
+    except:
+        return value
+
 
 
 def convert_to_none(value):
@@ -94,7 +113,13 @@ def convert_to_none(value):
         None: if value successfully converted; otherwise returns value unchanged.
     """
 
-    pass
+    try:
+        if value.strip(" ").lower() in NONE_VALUES:
+            return None
+        else:
+            return value
+    except:
+        return value
 
 
 def create_cache_key(url, params=None):
@@ -169,13 +194,13 @@ def read_csv(filepath, encoding='utf-8', newline='', delimiter=','):
     """
 
     with open(filepath, 'r', encoding=encoding, newline=newline) as file_obj:
-        # data = []
-        # reader = csv.reader(file_obj, delimiter=delimiter)
-        # for row in reader:
-        #     data.append(row)
+        data = []
+        reader = csv.reader(file_obj, delimiter=delimiter)
+        for row in reader:
+            data.append(row)
 
-        # return data
-        pass
+        return data
+        
 
 
 def read_csv_to_dicts(filepath, encoding='utf-8', newline='', delimiter=','):
@@ -199,9 +224,12 @@ def read_csv_to_dicts(filepath, encoding='utf-8', newline='', delimiter=','):
         # data = []
         # reader = csv.DictReader(file_obj, delimiter=delimiter)
         # for line in reader:
-        #     data.append(line) # OrderedDict() | alternative: data.append(dict(line))
+            # data.append(line) 
+            # OrderedDict() | alternative: data.append(dict(line))
 
-        pass
+        reader = csv.DictReader(file_obj, delimiter=delimiter)
+        return [line for line in reader]
+        
 
 
 def read_json(filepath, encoding='utf-8'):
@@ -237,3 +265,10 @@ def write_json(filepath, data, encoding='utf-8', ensure_ascii=False, indent=2):
 
     with open(filepath, 'w', encoding=encoding) as file_obj:
         json.dump(data, file_obj, ensure_ascii=ensure_ascii, indent=indent)
+
+# mandalorian_people = read_csv_to_dicts("./mandalorian_people.csv")
+# print(mandalorian_people)
+# print(f"\n2.1.1 convert_to_none -> None = {convert_to_none(' N/A ')}")
+# print(' N/A '.strip(" ").lower())
+# print(NONE_VALUES.lower())
+print(f"\n2.1.4 convert_to_list -> list = {convert_to_list('Diag, Hatcher, North Quad', ', ')}")
